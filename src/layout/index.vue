@@ -51,9 +51,12 @@
                 &.main-box{
                     display:flex;
                     flex-direction: column;
+                    background-color: #e0e0e0;
+                    padding:10px;
                 }
                 .main-view{
                     flex-grow: 1;
+                    background-color: #fff;
                 }
             }
         }
