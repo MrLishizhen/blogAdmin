@@ -5,20 +5,15 @@
         </div>
         <div class="header-list">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item>
-                    <router-link to="/" class="color">首页</router-link>
+                <el-breadcrumb-item v-for="(item,i) in bar" :key="i.toString()">
+                    <span class="color">{{item}}</span>
                 </el-breadcrumb-item>
-                <el-breadcrumb-item>
-                    <router-link to="/list" class="color">文章管理</router-link>
-                </el-breadcrumb-item>
-                <el-breadcrumb-item>
-                    <router-link to="/list" class="color">随心贴</router-link>
-                </el-breadcrumb-item>
+
             </el-breadcrumb>
         </div>
         <div class="header-user">
             <div class="user">
-                <div class="user-img"><img src="../../assets/home/user.jpg" alt="秋雨"></div>
+                <div class="user-img"><img src=""></div>
                 <div class="user-name">秋雨</div>
             </div>
             <ul class="list">
@@ -33,7 +28,35 @@
 
 <script>
     export default {
-        name: "Head"
+        name: "Head",
+        data(){
+            return{
+
+            }
+        },
+        created() {
+
+        },
+        computed:{
+          bar(){
+              let bar = this.$store.state.app.bar;
+              let i = bar.indexOf('');
+              if(i==-1){
+                  return bar;
+              }else{
+                  let data = [];
+                  bar.forEach((item)=>{
+                      if(item!=''){
+                          data.push(item);
+                      }
+                  })
+                  return data;
+              }
+          }
+        },
+        mounted(){
+
+        }
     }
 </script>
 
@@ -107,6 +130,7 @@
                 position:absolute;
                 bottom:0;
                 left:0;
+                z-index:4000;
                 li{
                     height:40px;
                     line-height:40px;

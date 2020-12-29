@@ -1,79 +1,110 @@
 <template>
     <div>
         <el-menu
-                default-active="1-1"
+                :default-active="defaultActive"
                 class="el-menu-vertical-demo"
                 background-color="#304156"
                 text-color="#fff"
+                router
+                @select="select"
                 active-text-color="#409EFF">
-            <el-submenu index="1">
+            <el-submenu :index="item.id" v-for="item in nav" :key = 'item.id'>
                 <template slot="title">
-                    <i class="el-icon-notebook-1"></i>
-                    <span>文章管理</span>
+                    <i :class="item.icon"></i>
+                    <span>{{item.name}}</span>
                 </template>
                 <el-menu-item-group>
-                    <el-menu-item index="1-1">
-                        <i class="el-icon-first-aid-kit"></i>
-                        <span>随心贴</span>
+                    <el-menu-item :index="items.routerUrl" v-for="items in item.children" :key="items.id">
+                        <i :class="items.icon"></i>
+                        <span>{{items.name}}</span>
                     </el-menu-item>
-                    <el-menu-item index="1-2">
-                        <i class="el-icon-connection"></i>
-                        <span>技术分享</span>
-                    </el-menu-item>
-                    <el-menu-item index="1-3">
-                        <i class="el-icon-date"></i>
-                        <span>岁月年华</span>
+                </el-menu-item-group>
+            </el-submenu>
 
-                    </el-menu-item>
-                    <el-menu-item index="1-4">
-                        <i class="el-icon-edit"></i>
-                        <span>添加文章</span>
-                    </el-menu-item>
-                </el-menu-item-group>
-            </el-submenu>
-            <el-submenu index="3">
-                <template slot="title">
-                    <i class="el-icon-s-tools"></i>
-                    <span>网站管理</span>
-                </template>
-                <el-menu-item-group>
-                    <el-menu-item index="3-1">
-                        <i class="el-icon-collection"></i>
-                        <span>导航管理</span>
-                    </el-menu-item>
-                </el-menu-item-group>
-                <el-menu-item-group>
-                    <el-menu-item index="3-2">
-                        <i class="el-icon-picture"></i>
-                        <span>轮播图管理</span>
-                    </el-menu-item>
-                </el-menu-item-group>
-            </el-submenu>
-            <el-submenu index="2">
-                <template slot="title">
-                    <i class="el-icon-user-solid"></i>
-                    <span>用户管理</span>
-                </template>
-                <el-menu-item-group>
-                    <el-menu-item index="2-1">
-                        <i class="el-icon-document"></i>
-                        <span>用户列表</span>
-                    </el-menu-item>
-                </el-menu-item-group>
-            </el-submenu>
         </el-menu>
     </div>
 </template>
 
 <script>
     export default {
-        name: "index"
+        name: "navlist",
+        data(){
+            return{
+                path:""
+            }
+        },
+
+        computed:{
+
+            //设置默认的选中
+            defaultActive(){
+                let nav = this.$props.nav;
+                let route = this.$route.path;
+
+                let defaultA = 0
+                let data =['首页'];
+                let name ='';
+                let fname = '';
+                for(let i = 0;i<nav.length;i++){
+                    for(let j=0;j<nav[i].children.length;j++){
+                        if(nav[i].children[j].routerUrl==route){
+                            name =nav[i].children[j].name;
+                            fname = nav[i].name;
+                            if(fname!=''){
+                                data.push(fname);
+                            }
+                            if(name!=''){
+                                data.push(name);
+                            }
+                            break;
+                        }
+                    }
+                }
+                this.$store.commit('app/bar',data);
+                defaultA = route;
+
+                console.log(defaultA);
+                return defaultA;
+            }
+
+        },
+        methods:{
+          select(index,indexPath){
+
+              let nav = this.$props.nav;
+              let [i,paths] = indexPath;
+
+              let data = nav[i-1];
+              let name = '';
+              if(data.children){
+                 let path = data.children.find(item=>item.routerUrl==paths);
+                 path?name = path.name : name="";
+
+              }
+              let list = ['首页'];
+              if(data.name!=''){
+                  list.push(data.name);
+                  if(name!=''){
+                      list.push(name)
+                  }
+              }
+              // this.$router.replace(index);
+              // console.log(index);
+              this.$store.commit('app/bar',list);
+
+          }
+        },
+        props:['nav']
     }
 </script>
 <style>
     .el-menu-item-group__title {
         padding: 0 !important;
 
+    }
+    .el-menu .el-submenu .el-menu-item{
+        height:40px;
+        line-height:40px;
     }
 </style>
 <style scoped>

@@ -8,7 +8,7 @@
         <el-container class="box">
 <!--            左侧导航-->
             <el-aside width="210px">
-                <layout_nav></layout_nav>
+                <layout_nav :nav="nav"></layout_nav>
             </el-aside>
             <el-main class="main-box">
                 <layout_tabs></layout_tabs>
@@ -30,6 +30,19 @@
             layout_head,
             layout_nav,
             layout_tabs
+        },
+        data(){
+            return{
+                nav:[]
+            }
+        },
+        created() {
+           this.nav=this.$store.state.app.nav;
+        },
+        watch:{
+            "$route.path":function(newOver,old){
+
+            }
         }
     }
 </script>
