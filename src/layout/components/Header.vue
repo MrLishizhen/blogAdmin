@@ -13,7 +13,7 @@
         </div>
         <div class="header-user">
             <div class="user">
-                <div class="user-img"><img src=""></div>
+                <div class="user-img"><img src="../../assets/home/user.jpg"></div>
                 <div class="user-name">秋雨</div>
             </div>
             <ul class="list">
@@ -70,11 +70,11 @@
             height:30px;
             flex-shrink: 0;
             border-radius: 3px;
-            background:url("../../assets/home/logo.png") no-repeat center/100%;
+            background:url("../../assets/home/adminlogo.png") no-repeat center/100%;
         }
         .header-list{
             flex-grow: 1;
-            margin-left:120px;
+            margin-left:140px;
             .color{
                 color:#fff;
                 &:hover{

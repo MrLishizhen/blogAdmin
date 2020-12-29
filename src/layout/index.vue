@@ -1,17 +1,17 @@
 <template>
     <el-container>
-<!--        头部-->
+        <!--        头部-->
         <el-header>
             <layout_head></layout_head>
         </el-header>
 
         <el-container class="box">
-<!--            左侧导航-->
+            <!--            左侧导航-->
             <el-aside width="210px">
                 <layout_nav :nav="nav"></layout_nav>
             </el-aside>
             <el-main class="main-box">
-                <layout_tabs></layout_tabs>
+<!--                <layout_tabs :data="tabs"></layout_tabs>-->
                 <div class="main-view">
                     <router-view></router-view>
                 </div>
@@ -23,51 +23,56 @@
 <script>
     // @ is an alias to /src
 
-    import {layout_head,layout_nav,layout_tabs} from './components'
+    import {layout_head, layout_nav, layout_tabs} from './components'
+
     export default {
         name: 'Home',
-        components:{
+        components: {
             layout_head,
             layout_nav,
             layout_tabs
         },
-        data(){
-            return{
-                nav:[]
+        data() {
+            return {
+                nav: [],
+                tabs: []
             }
         },
         created() {
-           this.nav=this.$store.state.app.nav;
-        },
-        watch:{
-            "$route.path":function(newOver,old){
+            this.nav = this.$store.state.app.nav;
+            this.tabs = this.$store.state.app.tabs;
 
-            }
+        },
+        watch: {
+
         }
     }
 </script>
 <style lang="less" scoped>
-    .el-container{
+    .el-container {
         //顶部
-        .el-header{
+        .el-header {
             background: #214fb4;
         }
+
         //下面内容区
-        .box{
+        .box {
 
             //左侧导航栏
-            .el-aside{
+            .el-aside {
                 background-color: rgb(48, 65, 86);
             }
+
             //下面内容区
-            .el-main{
-                &.main-box{
-                    display:flex;
+            .el-main {
+                &.main-box {
+                    display: flex;
                     flex-direction: column;
                     background-color: #e0e0e0;
-                    padding:10px;
+                    padding: 10px;
                 }
-                .main-view{
+
+                .main-view {
                     flex-grow: 1;
                     background-color: #fff;
                 }
