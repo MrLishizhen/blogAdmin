@@ -5,9 +5,11 @@ import router from './router'
 import store from './store'
 
 
-
 //引入全局样式
 import ('./index.css');
+
+//引入路由控件
+import "@/permission";
 
 //引入element ui
 import ElementUI from 'element-ui';

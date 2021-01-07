@@ -13,8 +13,9 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/Home/heart'
+    redirect: '/login'
   },
+  /*,
   {
     path:'/Home',
     name:"Home",
@@ -50,6 +51,11 @@ const routes = [
         component:user
       }
     ]
+  },*/
+  {
+    path:"/login",
+    name:"login",
+    component:()=>import("../views/login")
   }
   // {
   //   path: '/about',
@@ -64,5 +70,7 @@ const routes = [
 const router = new VueRouter({
   routes
 })
+
+
 
 export default router

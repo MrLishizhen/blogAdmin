@@ -39,11 +39,15 @@
             }
         },
         created() {
-            this.nav = this.$store.state.app.nav;
+            // this.nav = this.$store.state.app.nav;
+
             this.tabs = this.$store.state.app.tabs;
+            // this.$store.dispatch('app/init');
+        },
+        watch:{
 
         },
-        watch: {
+        methods:{
 
         }
     }
