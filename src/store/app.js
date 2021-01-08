@@ -6,6 +6,7 @@ export default {
     namespaced: true,
     state: {
         routerLink:[],
+
         nav: [
             // {
             //     name: "文章管理",
