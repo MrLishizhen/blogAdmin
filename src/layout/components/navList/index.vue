@@ -8,7 +8,7 @@
                 router
                 @select="select"
                 active-text-color="#409EFF">
-            <el-submenu :index="item.id" v-for="item in nav" :key='item.id.toString()'>
+            <el-submenu :index="item.id.toString()" v-for="item in nav" :key='item.id.toString()'>
                 <template slot="title">
                     <i :class="item.icon"></i>
                     <span>{{item.name}}</span>

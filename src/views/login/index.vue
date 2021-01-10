@@ -28,6 +28,7 @@
 
 <script>
     import {captcha ,login} from '../../api/admin'
+    import cookie from 'js-cookie'
     export default {
         name: "index",
         data(){
@@ -66,7 +67,7 @@
                        login(this.formInline).then(res=>{
                             if(res.status==200){
                                 this.$message('登录成功');
-                                sessionStorage.setItem("userToken",res.data);
+                                cookie.set("userToken",res.data);
                                 _this.$router.replace("/Home/heart").catch(()=>{});
                             }else{
                                 this.captchaClick();

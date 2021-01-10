@@ -14,7 +14,7 @@
         <div class="header-user">
             <div class="user">
                 <div class="user-img"><img src="../../assets/home/user.jpg"></div>
-                <div class="user-name">秋雨</div>
+                <div class="user-name" v-html="user.name"></div>
             </div>
             <ul class="list">
                 <li>
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+    import cookie from "js-cookie"
     export default {
         name: "Head",
         data(){
@@ -37,6 +38,7 @@
         created() {
 
         },
+        props:["user"],
         computed:{
           bar(){
               let bar = this.$store.state.app.bar;
@@ -56,7 +58,8 @@
         },
         mounted(){
 
-        }
+        },
+
     }
 </script>
 

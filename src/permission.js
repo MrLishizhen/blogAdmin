@@ -6,7 +6,7 @@ router.beforeEach(async (to,from,next)=>{
     if(to.path=="/login"){
         next();
     }else{
-        console.log(store.state.app.routerLink)
+
         if(store.state.app.routerLink.length==0){
 
         try{

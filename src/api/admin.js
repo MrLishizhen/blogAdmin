@@ -1,5 +1,6 @@
 import Axios from '../util/http'
 import qs from 'qs'
+import cookie from "js-cookie";
 export function nav(){
    return Axios({
         url:'/admin/nav',
@@ -22,6 +23,16 @@ export function login(data){
         url:'/admin/login',
         method:'POST',
         data:data,
+        loading:false,
+        GetShow: false
+    });
+}
+
+//获取用户信息
+export function dllogin(){
+    return Axios({
+        url:'/admin/dllogin',
+        method:'POST',
         loading:false,
         GetShow: false
     });

@@ -1,7 +1,7 @@
 import Axios from 'axios'
-
+import cookie from 'js-cookie'
 import qs from 'qs'
-
+import router from '../router'
 import { Loading, Message } from "element-ui";
 
 import {createTimestamp} from '../api'
@@ -11,6 +11,7 @@ let loadingInstance = null; // loading实例
 let needLoadingRequestCount = 0; //当前正在请求的数量
 //路由请求拦截
 Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+Axios.defaults.headers.post['Authorization'] = cookie.get("userToken");
 Axios.interceptors.request.use(config=>{
     //如果为0则重新创建loading
     //get请求添加时间戳
@@ -56,6 +57,15 @@ Axios.interceptors.response.use(response=>{
         needLoadingRequestCount == 0 && loadingInstance && loadingInstance.close();
     }
 
+    // console.log(response)
+    if(response.data.status==401){
+        console.log(1);
+        needLoadingRequestCount=0;
+        cookie.remove("user");
+        cookie.remove("userToken");
+        router.replace("/login").catch(err=>console.log(err));
+
+    }
         return response.data;
 
 

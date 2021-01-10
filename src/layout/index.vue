@@ -2,7 +2,7 @@
     <el-container>
         <!--        头部-->
         <el-header>
-            <layout_head></layout_head>
+            <layout_head :user="user"></layout_head>
         </el-header>
 
         <el-container class="box">
@@ -22,7 +22,8 @@
 
 <script>
     // @ is an alias to /src
-
+    import {dllogin} from '@/api/admin'
+    import cookie from 'js-cookie'
     import {layout_head, layout_nav, layout_tabs} from './components'
 
     export default {
@@ -35,20 +36,35 @@
         data() {
             return {
                 nav: [],
-                tabs: []
+                tabs: [],
+                user:{},
             }
         },
         created() {
-            // this.nav = this.$store.state.app.nav;
-
+            //设置导航
+            this.nav = this.$store.state.app.nav;
+            //设置tabs
             this.tabs = this.$store.state.app.tabs;
-            // this.$store.dispatch('app/init');
+            //获取用户信息
+            this.userFunc();
         },
         watch:{
 
         },
         methods:{
+            userFunc(){
+                dllogin().then(res=>{
+                    if(res.status==200){
+                        this.user=res.data;
+                        console.log(res.data);
+                        cookie.set("user",JSON.stringify(res.data));
+                    }else{
+                        this.$message(res.message);
+                    }
 
+                })
+
+            }
         }
     }
 </script>
