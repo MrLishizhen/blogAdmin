@@ -20,7 +20,7 @@
                 <li>
                     账号设置
                 </li>
-                <li>退出登录</li>
+                <li @click="returnLogin()">退出登录</li>
             </ul>
         </div>
     </div>
@@ -28,6 +28,7 @@
 
 <script>
     import cookie from "js-cookie"
+    import {unLogin} from "../../util/func"
     export default {
         name: "Head",
         data(){
@@ -56,8 +57,10 @@
               }
           }
         },
-        mounted(){
-
+        methods:{
+            returnLogin(){
+                unLogin();
+            }
         },
 
     }

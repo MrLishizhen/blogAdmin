@@ -5,13 +5,14 @@ import router from '../router'
 import { Loading, Message } from "element-ui";
 
 import {createTimestamp} from '../api'
+import {unLogin} from "../util/func"
 
 
 let loadingInstance = null; // loading实例
 let needLoadingRequestCount = 0; //当前正在请求的数量
 //路由请求拦截
 Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-Axios.defaults.headers.post['Authorization'] = cookie.get("userToken");
+// Axios.defaults.headers.post['Authorization'] = cookie.get("userToken");
 Axios.interceptors.request.use(config=>{
     //如果为0则重新创建loading
     //get请求添加时间戳
@@ -59,11 +60,11 @@ Axios.interceptors.response.use(response=>{
 
     // console.log(response)
     if(response.data.status==401){
-        console.log(1);
+        // console.log(1);
         needLoadingRequestCount=0;
-        cookie.remove("user");
-        cookie.remove("userToken");
-        router.replace("/login").catch(err=>console.log(err));
+        response.data.message='权限验证失败，请重新登录'
+        //清除状态
+        unLogin();
 
     }
         return response.data;

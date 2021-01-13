@@ -124,7 +124,7 @@
         border-color:#ccc;
 
     }
-    .el-input__inner{
+    .login .el-input__inner{
         height:100%!important;
     }
     .el-input-group__append{

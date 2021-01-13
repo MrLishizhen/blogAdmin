@@ -32,6 +32,22 @@ export function login(data){
 export function dllogin(){
     return Axios({
         url:'/admin/dllogin',
+        headers:{
+            Authorization:cookie.get("userToken")
+        },
+        method:'POST',
+        loading:false,
+        GetShow: false
+    });
+}
+//上传文章/addarticle
+export function addarticle(data){
+    return Axios({
+        url:'/admin_article/addarticle',
+        data:data,
+        headers:{
+            Authorization:cookie.get("userToken")
+        },
         method:'POST',
         loading:false,
         GetShow: false

@@ -1,9 +1,10 @@
 import router from "@/router/index"
 import store from "@/store"
-import {addRouters} from "@/util/func";
+import {addRouters,unLogin} from "@/util/func";
 router.beforeEach(async (to,from,next)=>{
 
     if(to.path=="/login"){
+        // unLogin();
         next();
     }else{
 

@@ -1,4 +1,6 @@
 import layout from '@/layout'
+import cookie from "js-cookie";
+import router from "../router";
 export function navChildren(data){
     let navData = data;
     let nav = [];
@@ -76,4 +78,11 @@ export function addRouters(data){
         });
         arr.push(home);
         return arr;
+}
+
+//退出登录
+export function unLogin(){
+    cookie.remove("user");
+    cookie.remove("userToken");
+    router.replace("/login").catch(err=>console.log(err));
 }
