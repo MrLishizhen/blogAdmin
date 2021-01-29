@@ -36,7 +36,12 @@ Axios.interceptors.request.use(config=>{
         needLoadingRequestCount++;
     }
     // console.log(config);
-    config.data = qs.stringify(config.data);
+    if(config.headers["Content-Type"] != "multipart/form-data"){
+
+    }else{
+        config.data = qs.stringify(config.data);
+    }
+
     return config
 
 },error=>{
@@ -65,8 +70,10 @@ Axios.interceptors.response.use(response=>{
         response.data.message='权限验证失败，请重新登录'
         //清除状态
         unLogin();
-
     }
+    // else if(response.data.status==199){
+    //     Message.error(response.data.message);
+    // }
         return response.data;
 
 

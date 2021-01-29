@@ -41,7 +41,7 @@
 
 <script>
     import axios from 'axios'
-    import {addarticle} from "@/api/admin"
+    import {addarticle,uploadImge} from "@/api/admin"
     import tinymce from 'tinymce/tinymce'
     import Editor from '@tinymce/tinymce-vue'
 
@@ -118,22 +118,25 @@
             }
         },
         methods:{
-            imgUpload (blobInfo, success, failure) {
-                console.log(123)
-                const formData = new FormData();
-                formData.append('files', blobInfo.blob(), blobInfo.filename());
-                axios.post('/admin_article/addArticleImg', formData,{"Content-Type":"multipart/form-data"}).then((res) => {
+           async imgUpload (blobInfo, success, failure) {
 
-                    if(res.data.success) {
+                const data = new FormData();
+
+                data.append('file', blobInfo.blob(),blobInfo.filename());
+
+                await uploadImge(data).then((res) => {
+                    console.log(res,123);
+
+                    if(res.status) {
                         this.$message({
                             message: '上传成功',
                             type: 'success',
                             center: true
                         });
 
-                        let url = res.data
-                        this.imgString += url
-                        success(url)
+                        let url = res.data;
+                        this.imgString += "/tmp/" +url;
+                        success(this.imgString)
                     } else {
                         this.$message({
                             message: '上传失败',

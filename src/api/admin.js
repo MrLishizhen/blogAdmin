@@ -53,3 +53,97 @@ export function addarticle(data){
         GetShow: false
     });
 }
+
+//图片上传
+export function uploadImge(data){
+    return Axios({
+        url:'/admin_article/addArticleImg',
+        data:data,
+        headers:{
+            Authorization:cookie.get("userToken")
+        },
+        method:'POST',
+        loading:false,
+        GetShow: false
+    });
+}
+
+//请求后台一级参数
+export function navAdministration(){
+    return Axios({
+        url:'/admin/navAdministration',
+        headers:{
+            Authorization:cookie.get("userToken")
+        },
+        method:'POST',
+        loading:false,
+        GetShow: false
+    })
+}
+//显示隐藏栏目
+export function navAdministrationState(data){
+    return Axios({
+        url:'/admin/navAdministration/state',
+        headers:{
+            Authorization:cookie.get("userToken")
+        },
+        data:data,
+        method:'POST',
+        loading:true,
+        GetShow: false
+    })
+}
+//添加栏目
+export function addNav(data){
+    return Axios({
+        url:'/admin/navAdministration/addState',
+        headers:{
+            Authorization:cookie.get("userToken")
+        },
+        data:data,
+        method:'POST',
+        loading:true,
+        GetShow: false
+    })
+}
+//删除栏目
+export function deleteState(data){
+    return Axios({
+        url:'/admin/navAdministration/deleteState',
+        headers:{
+            Authorization:cookie.get("userToken")
+        },
+        data:data,
+        method:'POST',
+        loading:true,
+        GetShow: false
+    })
+}
+
+//修改栏目
+export function updateState(data){
+    return Axios({
+        url:'/admin/navAdministration/updateState',
+        headers:{
+            Authorization:cookie.get("userToken")
+        },
+        data:data,
+        method:'POST',
+        loading:true,
+        GetShow: false
+    })
+}
+
+//获取文章表格数据
+export function getTable(data){
+    return Axios({
+        url:'/admin/share/gettable',
+        headers:{
+            Authorization:cookie.get("userToken")
+        },
+        data:data,
+        method:'POST',
+        loading:true,
+        GetShow: false
+    })
+}

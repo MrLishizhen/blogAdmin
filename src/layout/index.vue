@@ -56,7 +56,7 @@
                 dllogin().then(res=>{
                     if(res.status==200){
                         this.user=res.data;
-                        console.log(res.data);
+
                         cookie.set("user",JSON.stringify(res.data));
                     }else{
                         this.$message(res.message);
