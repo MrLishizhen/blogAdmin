@@ -147,3 +147,31 @@ export function getTable(data){
         GetShow: false
     })
 }
+
+//获取文章表格数据
+export function setTableHot(data){
+    return Axios({
+        url:'/admin/share/setarticle_is',
+        headers:{
+            Authorization:cookie.get("userToken")
+        },
+        data:data,
+        method:'POST',
+        loading:true,
+        GetShow: false
+    })
+}
+//删除文章
+// /share/deleteArticle
+export function deleteTable(data){
+    return Axios({
+        url:'/admin/share/deleteArticle',
+        headers:{
+            Authorization:cookie.get("userToken")
+        },
+        data:data,
+        method:'POST',
+        loading:true,
+        GetShow: false
+    })
+}

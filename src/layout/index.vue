@@ -4,7 +4,6 @@
         <el-header>
             <layout_head :user="user"></layout_head>
         </el-header>
-
         <el-container class="box">
             <!--            左侧导航-->
             <el-aside width="210px">
@@ -13,16 +12,21 @@
             <el-main class="main-box">
 <!--                <layout_tabs :data="tabs"></layout_tabs>-->
                 <div class="main-view">
-                    <router-view></router-view>
+                    <transition name="fade" mode="out-in">
+                        <router-view class="routerbox"></router-view>
+                    </transition>
                 </div>
             </el-main>
         </el-container>
+<!--        整体弹窗-->
+        <layout_dialog :centerDialogVisible.sync ="centerDialogVisible" :testringdata="testringdata"></layout_dialog>
     </el-container>
 </template>
 
 <script>
     // @ is an alias to /src
     import {dllogin} from '@/api/admin'
+    import layout_dialog from '../components/Dialog/index'
     import cookie from 'js-cookie'
     import {layout_head, layout_nav, layout_tabs} from './components'
 
@@ -31,13 +35,16 @@
         components: {
             layout_head,
             layout_nav,
-            layout_tabs
+            layout_tabs,
+            layout_dialog
         },
         data() {
             return {
                 nav: [],
                 tabs: [],
                 user:{},
+                centerDialogVisible:false,
+                testringdata:{}
             }
         },
         created() {
@@ -47,8 +54,18 @@
             this.tabs = this.$store.state.app.tabs;
             //获取用户信息
             this.userFunc();
+
         },
         watch:{
+            '$store.state.dialog.centerDialogVisible':function(newval){
+                   if(newval==true){
+                       this.centerDialogVisible=newval;
+                       this.testringdata=this.$store.state.dialog.data
+                   }else{
+                       this.centerDialogVisible=newval;
+                       this.testringdata={}
+                   }
+                },
 
         },
         methods:{
@@ -61,7 +78,6 @@
                     }else{
                         this.$message(res.message);
                     }
-
                 })
 
             }
@@ -69,6 +85,13 @@
     }
 </script>
 <style lang="less" scoped>
+    .fade-enter-active, .fade-leave-active {
+        transition: all .5s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        transform: translateX(20%);
+        opacity: 0;
+    }
     .el-container {
         //顶部
         .el-header {
@@ -91,10 +114,15 @@
                     background-color: #e0e0e0;
                     padding: 10px;
                 }
-
+                .routerbox{
+                    background-color: #fff;
+                    height:100%;
+                    box-sizing: border-box;
+                }
                 .main-view {
                     flex-grow: 1;
-                    background-color: #fff;
+                    overflow:hidden;
+                    /*background-color: #fff;*/
                 }
             }
         }

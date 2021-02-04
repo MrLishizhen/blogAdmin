@@ -12,12 +12,11 @@
             <el-table-column
                  v-if="columnType"
                  :type="columnType"
+                 align="center"
                  label="序号"
                  width="50"
             >
             </el-table-column>
-
-
             <template v-for="(item,i) in col">
 <!--                btn按钮组-->
                 <el-table-column
@@ -25,6 +24,7 @@
                         :prop="item.prop"
                         :label="item.label"
                         :sortable="item.sort"
+                        :show-overflow-tooltip="true"
                         :width="item.width?item.width:'auto'">
                     <template  slot-scope="scope">
 <!--                        type:primary,success,info,warning,danger-->
@@ -41,14 +41,16 @@
                 </el-table-column>
 <!--                slot动态展示-->
                 <el-table-column
-                        v-else-if="item.template&& (typeof item.template)=='function'&&item.slot"
+                        v-else-if="item.slot"
                         :prop="item.prop"
                         :label="item.label"
                         :sortable="item.sort"
+                        :show-overflow-tooltip="true"
                         :width="item.width?item.width:'auto'">
                     <template  slot-scope="scope">
                         <div>
-                            <slot :name=" "></slot>
+                            <slot :name="item.soltName" :row="scope.row"></slot>
+<!--                            <span v-html="item.template(scope.row)"></span>-->
                         </div>
                     </template>
                 </el-table-column>
@@ -58,6 +60,7 @@
                         :prop="item.prop"
                         :label="item.label"
                         :sortable="item.sort"
+                        :show-overflow-tooltip="true"
                         :width="item.width?item.width:'auto'">
                     <template  slot-scope="scope">
                         <div v-html="item.template(scope.row)"></div>
@@ -68,12 +71,15 @@
                     v-else
                     :prop="item.prop"
                     :label="item.label"
+                    :sortable="item.sort"
+                    :show-overflow-tooltip="true"
                     :width="item.width?item.width:'auto'">
                 </el-table-column>
 
             </template>
         </el-table>
-        <div class="page" v-if="count">
+        <div class="page">
+<!--            <div class="page" v-if="count">-->
             <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
@@ -81,7 +87,8 @@
                     :page-size="page_size"
                     layout="total, prev, pager, next,sizes"
                     :page-sizes="pageSizes"
-                    :total="count">
+                    :total="count"
+            >
             </el-pagination>
         </div>
     </div>
@@ -160,7 +167,7 @@
             },
             count:{
                 type:Number,
-                default:0
+                default:100
             },
             layout:{
                 type:String,
@@ -184,6 +191,7 @@
         methods:{
             //监听每页总数切换
             handleSizeChange(val) {
+                console.log(val);
                 // this.page_size=val;
             },
             handleCurrentChange(val) {
@@ -199,7 +207,7 @@
             fetTableHeight() {
                 this.resetHeight().then(res => {
                     //判断请求的数据
-                    if(!this.count<=50){
+                    if(this.count<=50){
                         this.height = this.$refs.tableBox.getBoundingClientRect().height-15;
                     }else{
                         this.height = this.$refs.tableBox.getBoundingClientRect().height-60;

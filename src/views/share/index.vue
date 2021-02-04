@@ -29,13 +29,23 @@
                     </el-col>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" icon="el-icon-search">搜索</el-button>
-
+                    <el-button type="primary" icon="el-icon-search" @click="gettable">搜索</el-button>
                 </el-form-item>
             </el-form>
         </div>
         <div class="share-com">
-            <tablelsz  :col="tableDatas.col" :data="tableDatas.data" :columnType="'index'"></tablelsz>
+            <tablelsz
+                    :col="tableDatas.col"
+                    :data="tableDatas.data"
+                    :count = '1000'
+                    :columnType="'index'"
+            >
+                <template #btns="{row}">
+                    <el-button @click="edit(row)" :type="row['article_is'] == 1 ?'primary':'info'" :icon="row['article_is'] == 1 ? 'el-icon-success':'el-icon-error'" :title="row['article_is'] == 1?'隐藏':'显示'" circle></el-button>
+                    <el-button type="primary" icon="el-icon-edit" @click="defaults" circle title="查看"></el-button>
+                    <el-button @click="deleteClick(row)" type="danger" icon="el-icon-delete" circle title="删除"></el-button>
+                </template>
+            </tablelsz>
         </div>
 
     </div>
@@ -43,7 +53,7 @@
 
 <script>
     import tablelsz from '@/components/tablesCom.vue';
-    import {getTable} from "@/api/admin.js";
+    import {getTable,setTableHot,deleteTable} from "@/api/admin.js";
     export default {
         name: "share",
         data(){
@@ -68,11 +78,69 @@
         },
         components:{tablelsz},
         created() {
-            this.gettable()
+            this.gettable();
+
         },
         methods:{
+            defaults(){
+                this.$store.commit("dialog/init",{isShow:true,Obj:{width:'90%',height:'90%',title:'查看页面'}});
+            },
+            deleteClick(row){
+                let that = this;
+                let id = row.article_id;
+                this.$confirm('此操作将删除文章,不可恢复。是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    deleteTable({id}).then(res=>{
+                        if(res.status==200){
+                            let dataIndex = that.tableDatas.data.findIndex(item=>item.article_id==id);
+                            that.tableDatas.data.splice(dataIndex,1);
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功'
+                            });
+                        }else{
+                            this.$message.error('删除失败');
+                        }
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
 
-
+            },
+            edit(row){
+                let that = this;
+                let id = row.article_id;
+                let hot = row.article_is==1? 0 :1;
+                this.$confirm('此操作将修改该文章的展示或隐藏, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    setTableHot({hot,id}).then(res=>{
+                        if(res.status==200){
+                            let data = that.tableDatas.data.find(item=>item.article_id==id);
+                            data.article_is = hot;
+                            this.$message({
+                                type: 'success',
+                                message: '修改成功'
+                            });
+                        }else{
+                            this.$message.error('修改失败');
+                        }
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消修改'
+                    });
+                });
+            },
             gettable(){
                 const data = {};
                 data.article_title=this.form.article_title;
@@ -88,7 +156,7 @@
                         {
                             label:"主标题",
                             prop:"article_title",
-
+                            width:200
                         },
                         {
                             label :"副标题",
@@ -112,14 +180,18 @@
                             sort:true
                         },{
                             label:"文章浏览量",
-                            prop:"article_count"
+                            prop:"article_count",
+                            sort:true
                         },{
                             label:"操作",
                             prop:"",
+                            width:200,
                             fixed:'right',
-                            template:(e)=>{
-
-                            }
+                            slot:true,
+                            soltName:"btns",
+                            // template:(e)=>{动态修改表格元素中的值
+                            //     return
+                            // }
                             // btns:[
                             //     {
                             //         label:"删除",
